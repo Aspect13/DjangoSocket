@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  app:
+    build: .
+    hostname: app
+    container_name: app
+    networks:
+      - main
+    command: sh -c "
+      python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && python -m uvicorn config.asgi:application --reload --workers 2 --host 0.0.0.0
+      "
+    #      && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker --workers 4 -b 0.0.0.0:8001 --reload
+    #      && python manage.py runserver 0.0.0.0:8001
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings
+#    expose:
+#      - "8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/opt/app
+      - ./static:/opt/app/static
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - app
+    networks:
+      - main
+    restart: on-failure
+    ports:
+      - "80:80"
+    volumes:
+      #      - ./frontend/dist:/var/www/qwiz/app
+      - ./static:/var/www/app/static
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf
+
+
+networks:
+  main:
