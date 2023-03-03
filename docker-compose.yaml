@@ -11,14 +11,11 @@ services:
       python manage.py makemigrations
       && python manage.py migrate
       && python manage.py collectstatic --noinput
-      && python -m uvicorn config.asgi:application --reload --workers 2 --host 0.0.0.0
+      && python -m uvicorn config.asgi:application --workers 2 --host 0.0.0.0 --port 8000 --reload
       "
-    #      && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker --workers 4 -b 0.0.0.0:8001 --reload
-    #      && python manage.py runserver 0.0.0.0:8001
+#      && python -m gunicorn config.asgi:application -k uvicorn.workers.UvicornWorker --workers 2 --bind 0.0.0.0:8000 --reload
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings
-#    expose:
-#      - "8000"
     ports:
       - "8000:8000"
     volumes:
@@ -35,7 +32,6 @@ services:
     ports:
       - "80:80"
     volumes:
-      #      - ./frontend/dist:/var/www/qwiz/app
       - ./static:/var/www/app/static
       - ./nginx.dev.conf:/etc/nginx/nginx.conf
 

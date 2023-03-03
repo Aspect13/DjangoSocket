@@ -38,7 +38,10 @@ function App() {
     }
 
     return (
-        <Chat socket={socket}/>
+        <>
+            <p>Connected: {isConnected.toString()}</p>
+            <Chat socket={socket}/>
+        </>
     )
     return (
         <>

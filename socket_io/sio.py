@@ -42,4 +42,4 @@ async def connect(sid, environ):
 
 @sio.event
 async def disconnect(sid):
-    print(f"{sid}\t {users[sid]} disconnected")
+    print(f"{sid}\t disconnected")

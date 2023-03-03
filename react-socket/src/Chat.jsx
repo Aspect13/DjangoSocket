@@ -28,7 +28,10 @@ const Chat = ({socket}) => {
     if (!submittedName) {
         return (
             <div>
-                <input type={'text'} placeholder={'choose your chatname'} onChange={e => setName(e.target.value)} value={name}/>
+                <input type={'text'} placeholder={'choose your chatname'} value={name}
+                       onChange={e => setName(e.target.value)}
+                       onKeyDown={e => e.key === 'Enter' && setSubmittedName(name)}
+                />
                 <button type={"button"} onClick={e => setSubmittedName(name)}>Submit</button>
             </div>
         )
@@ -46,8 +49,10 @@ const Chat = ({socket}) => {
                     )
                 })}
             </ul>
-            <input type={"text"} onChange={e => setChatMessage(e.target.value)} value={chatMessage} onKeyDown={e => e.key === 'Enter' && handleSendMessage(e)} />
-            <button type={"submit"} onClick={handleSendMessage}>Send</button>
+            <input type={"text"} value={chatMessage}
+                   onChange={e => setChatMessage(e.target.value)}
+                   onKeyDown={e => e.key === 'Enter' && handleSendMessage(e)} />
+            <button type={"button"} onClick={handleSendMessage}>Send</button>
         </div>
     )
 }
