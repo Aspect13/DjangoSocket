@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import io from 'socket.io-client';
+import Chat from "./Chat.jsx";
 
 const socket = io()
 
@@ -37,13 +38,20 @@ function App() {
     }
 
     return (
-        <div>
-            <p>Connected: { '' + isConnected }</p>
-            <p>Last pong: { lastPong || '-' }</p>
-            <p>Pong msg: { msg || '-' }</p>
-            <p>Pong room: { sid || '-' }</p>
-            <button onClick={ sendPing }>Send ping</button>
-        </div>
+        <Chat socket={socket}/>
+    )
+    return (
+        <>
+            <div>
+                <p>Connected: {'' + isConnected}</p>
+                <p>Last pong: {lastPong || '-'}</p>
+                <p>Pong msg: {msg || '-'}</p>
+                <p>Pong room: {sid || '-'}</p>
+                <button onClick={sendPing}>Send ping</button>
+            </div>
+            <Chat socket={socket}/>
+        </>
+
     );
 }
 
